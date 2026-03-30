@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from pathlib import Path
 
 
@@ -9,19 +10,25 @@ def setup_logger(log_dir: Path, log_level: str = "INFO") -> logging.Logger:
     if logger.handlers:
         return logger
 
-    log_file = log_dir / "automation.log"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    latest_log_file = log_dir / "automation.log"
+    run_log_file = log_dir / f"automation_{timestamp}.log"
 
     formatter = logging.Formatter(
         "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     )
 
-    file_handler = logging.FileHandler(log_file, encoding="utf-8")
-    file_handler.setFormatter(formatter)
+    latest_file_handler = logging.FileHandler(latest_log_file, encoding="utf-8")
+    latest_file_handler.setFormatter(formatter)
+
+    run_file_handler = logging.FileHandler(run_log_file, encoding="utf-8")
+    run_file_handler.setFormatter(formatter)
 
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)
 
-    logger.addHandler(file_handler)
+    logger.addHandler(latest_file_handler)
+    logger.addHandler(run_file_handler)
     logger.addHandler(stream_handler)
 
     return logger
