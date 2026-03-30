@@ -3,7 +3,12 @@ from datetime import datetime
 from src.config import settings
 from src.pages.login_page import LoginPage
 from src.pages.report_page import ReportPage
-from src.processing.data_processor import save_raw_data
+from src.processing.data_processor import (
+    load_raw_data,
+    save_processed_data,
+    save_raw_data,
+    transform_session_data,
+)
 
 
 class ProcessRunner:
@@ -37,6 +42,14 @@ class ProcessRunner:
 
         raw_output_path = settings.RAW_DATA_DIR / "session_data.json"
         save_raw_data(extracted_data, raw_output_path)
-
         self.logger.info("Raw data saved to: %s", raw_output_path)
+
+        raw_payload = load_raw_data(raw_output_path)
+        processed_df = transform_session_data(raw_payload)
+
+        processed_output_path = settings.PROCESSED_DATA_DIR / "session_data_processed.csv"
+        save_processed_data(processed_df, processed_output_path)
+        self.logger.info("Processed data saved to: %s", processed_output_path)
+
         print("Extracted data:", extracted_data)
+        print(processed_df)
