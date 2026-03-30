@@ -9,6 +9,7 @@ from src.processing.data_processor import (
     save_raw_data,
     transform_session_data,
 )
+from src.reporting.excel_report import generate_excel_report
 
 
 class ProcessRunner:
@@ -51,5 +52,10 @@ class ProcessRunner:
         save_processed_data(processed_df, processed_output_path)
         self.logger.info("Processed data saved to: %s", processed_output_path)
 
+        excel_output_path = settings.OUTPUT_DIR / "session_report.xlsx"
+        generate_excel_report(processed_df, excel_output_path)
+        self.logger.info("Excel report saved to: %s", excel_output_path)
+
         print("Extracted data:", extracted_data)
         print(processed_df)
+        print("Excel report:", excel_output_path)
