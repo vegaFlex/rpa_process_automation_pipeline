@@ -33,4 +33,7 @@ class ReportPage:
         flash_message = self.wait.until(
             EC.visibility_of_element_located(self.FLASH_MESSAGE)
         )
-        return flash_message.text.strip()
+        return flash_message.text.replace("\n", " ").strip()
+
+    def get_current_url(self) -> str:
+        return self.driver.current_url

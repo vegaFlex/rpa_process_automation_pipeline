@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from src.config import settings
 from src.pages.login_page import LoginPage
 from src.pages.report_page import ReportPage
+from src.processing.data_processor import save_raw_data
 
 
 class ProcessRunner:
@@ -25,11 +28,15 @@ class ProcessRunner:
         report_page.verify_page_loaded()
         self.logger.info("Secure/report page loaded successfully.")
 
-        page_heading = report_page.get_page_heading()
-        flash_message = report_page.get_flash_message()
+        extracted_data = {
+            "execution_timestamp": datetime.now().isoformat(),
+            "page_heading": report_page.get_page_heading(),
+            "flash_message": report_page.get_flash_message(),
+            "current_url": report_page.get_current_url(),
+        }
 
-        self.logger.info("Page heading: %s", page_heading)
-        self.logger.info("Flash message: %s", flash_message)
+        raw_output_path = settings.RAW_DATA_DIR / "session_data.json"
+        save_raw_data(extracted_data, raw_output_path)
 
-        print("Page heading:", page_heading)
-        print("Flash message:", flash_message)
+        self.logger.info("Raw data saved to: %s", raw_output_path)
+        print("Extracted data:", extracted_data)
