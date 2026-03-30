@@ -2,6 +2,8 @@
 
 A production-style Python automation project that simulates a complete business workflow using Selenium, pandas, openpyxl, configurable environment settings, and test coverage.
 
+![RPA Process Automation Overview](docs/images/rpa-process-automation.png)
+
 ## Business Case
 
 This project demonstrates a realistic automation pipeline:
