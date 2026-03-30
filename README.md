@@ -145,6 +145,8 @@ Run through the batch file:
 .\run_pipeline.bat
 ```
 
+The batch runner starts the pipeline in headless mode, appends console output to `logs/batch_output.log`, and returns a non-zero exit code if the run fails.
+
 ## Run Tests
 
 ```powershell
@@ -160,6 +162,35 @@ The pipeline generates:
 - Excel report in `data/output/`
 - batch output log in `logs/batch_output.log`
 - execution logs in `logs/`
+
+## Demo Notes
+
+This project currently uses the public demo site `https://the-internet.herokuapp.com/login` to simulate a secure business login flow.
+
+Demo credentials:
+
+- username: `tomsmith`
+- password: `SuperSecretPassword!`
+
+This makes the project easy to run, test, and demonstrate without requiring access to a private internal system.
+
+## Windows Task Scheduler Setup
+
+Use the batch file for scheduled execution:
+
+1. Open Windows Task Scheduler
+2. Create a new basic task
+3. Set the trigger you want, for example daily at 09:00
+4. Choose `Start a program`
+5. Select `run_pipeline.bat` from the project root
+6. Save the task and test it manually
+
+Recommended setup:
+
+- run whether the user is logged in or not
+- use the same Windows account that has access to Chrome and the project files
+- keep `.venv` installed and available in the project root
+- review `logs/batch_output.log` and the timestamped logs in `logs/` after each test run
 
 ## Current Features
 
