@@ -4,9 +4,9 @@ from selenium.webdriver.chrome.options import Options
 from src.config import settings
 
 
-def create_driver():
+def create_driver(headless: bool = False):
     if settings.BROWSER.lower() != "chrome":
-        raise ValueError("Currently only Chrome is supported in Step 1.")
+        raise ValueError("Currently only Chrome is supported.")
 
     chrome_options = Options()
 
@@ -18,7 +18,7 @@ def create_driver():
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    if settings.HEADLESS:
+    if headless:
         chrome_options.add_argument("--headless=new")
 
     chrome_options.add_argument("--start-maximized")

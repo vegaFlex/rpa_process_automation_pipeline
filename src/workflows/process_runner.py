@@ -14,9 +14,10 @@ from src.reporting.excel_report import generate_excel_report
 
 
 class ProcessRunner:
-    def __init__(self, driver, logger):
+    def __init__(self, driver, logger, email_enabled: bool = False):
         self.driver = driver
         self.logger = logger
+        self.email_enabled = email_enabled
 
     def run(self) -> None:
         self.logger.info("Starting login workflow.")
@@ -64,7 +65,7 @@ class ProcessRunner:
             "Please find the attached report.\n"
         )
 
-        if settings.EMAIL_ENABLED:
+        if self.email_enabled:
             email_payload = email_sender.build_email_payload(
                 recipient=settings.EMAIL_TO,
                 subject=settings.EMAIL_SUBJECT,
