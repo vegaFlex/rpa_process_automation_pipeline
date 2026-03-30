@@ -21,6 +21,10 @@ HEADLESS = os.getenv("HEADLESS", "False").lower() == "true"
 LOGIN_USERNAME = os.getenv("LOGIN_USERNAME", "")
 LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD", "")
 
+EMAIL_ENABLED = os.getenv("EMAIL_ENABLED", "False").lower() == "true"
+EMAIL_TO = os.getenv("EMAIL_TO", "")
+EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "RPA Automation Report")
+
 RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
 PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)

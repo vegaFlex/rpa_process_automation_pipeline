@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from src.config import settings
+from src.notifications.email_sender import EmailSender
 from src.pages.login_page import LoginPage
 from src.pages.report_page import ReportPage
 from src.processing.data_processor import (
@@ -55,6 +56,25 @@ class ProcessRunner:
         excel_output_path = settings.OUTPUT_DIR / "session_report.xlsx"
         generate_excel_report(processed_df, excel_output_path)
         self.logger.info("Excel report saved to: %s", excel_output_path)
+
+        email_sender = EmailSender(self.logger)
+        email_body = (
+            "Hello,\n\n"
+            "The automation process completed successfully.\n"
+            "Please find the attached report.\n"
+        )
+
+        if settings.EMAIL_ENABLED:
+            email_payload = email_sender.build_email_payload(
+                recipient=settings.EMAIL_TO,
+                subject=settings.EMAIL_SUBJECT,
+                body=email_body,
+                attachment_path=excel_output_path,
+            )
+            self.logger.info("Email payload ready: %s", email_payload)
+            print("Email payload:", email_payload)
+        else:
+            self.logger.info("Email sending is disabled in settings.")
 
         print("Extracted data:", extracted_data)
         print(processed_df)
